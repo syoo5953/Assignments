@@ -268,7 +268,6 @@ public class SolverTests {
 
         IPlan p = new Plan(2, 3);
         ISolver s = new Solver(guests, p, r);
-
         Assertions.assertTrue(s.solve());   // did we solve it?
 
         // do the Rules say it's valid? (This may say "yes" when it isn't valid,
@@ -327,9 +326,7 @@ public class SolverTests {
 
         IPlan p = new Plan(3,5);
         ISolver s = new Solver(guests, p, r);
-
         Assertions.assertTrue(s.solve());
-
         Assertions.assertTrue(areTogether(p,"John Smith","Mary Smith"));
         Assertions.assertTrue(areApart(p,"John Smith","Anne Jones"));
         Assertions.assertTrue(areTogether(p,"Xiuyan Wang","Zixin Chen"));

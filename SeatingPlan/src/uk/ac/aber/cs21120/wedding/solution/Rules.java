@@ -7,7 +7,6 @@ import java.util.*;
 public class Rules implements IRules{
     private boolean isEnemy = false;
     private List<String[]> enemyList = new ArrayList<>();
-    private HashMap<String[], Boolean> friendMap = new HashMap<>();
     private boolean isFriend = false;
     private List<String[]> friendList = new ArrayList<>();
 
@@ -16,7 +15,6 @@ public class Rules implements IRules{
         String[] arr = new String[]{a, b};
         this.friendList.add(arr);
         this.isFriend = true;
-        friendMap.put(arr, false);
     }
 
     @Override
@@ -39,20 +37,21 @@ public class Rules implements IRules{
     }
 
     private boolean checkFriend(IPlan p) {
-        HashMap<String[], Boolean> tempMap = new HashMap<>(this.friendMap);
+        boolean result;
         for(int i = 0; i < p.getNumberOfTables(); i++) {
-
-            if(!p.isTableFull(i)) return true;
-
-            Set<String> guests = p.getGuestsAtTable(i);
+            result = true;
+            Set<String> guestSet = p.getGuestsAtTable(i);
             for(String[] subFriend : this.friendList) {
-                if(guests.containsAll(Arrays.asList(subFriend))) {
-                    tempMap.replace(subFriend, true);
+                if(guestSet.contains(subFriend[0])) {
+                    if(!guestSet.contains(subFriend[1])) result = false;
                 }
+                if(guestSet.contains(subFriend[1])) {
+                    if(!guestSet.contains(subFriend[0])) result = false;
+                }
+                if(!result && isTableFull(p, i)) return false;
             }
         }
-        boolean allTrue = tempMap.values().stream().allMatch(x -> x);
-        return allTrue;
+        return true;
     }
 
     private boolean checkEnemy(IPlan p) {
@@ -66,4 +65,12 @@ public class Rules implements IRules{
         }
         return true;
     }
+
+    private boolean isTableFull(IPlan p, int t) {
+        if(p.getGuestsAtTable(t).size() == p.getSeatsPerTable()) {
+            return true;
+        }
+        return false;
+    }
+
 }

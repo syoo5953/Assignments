@@ -22,22 +22,24 @@ public class Solver implements uk.ac.aber.cs21120.wedding.interfaces.ISolver{
     @Override
     public boolean solve() {
         List<String> guest = Arrays.asList(guests);
+        System.out.println(p.toString());
         for(int i = 0; i < p.getNumberOfTables(); i++) {
-            if(!p.isTableFull(i)) {
-                for(int j = 0; j < p.getSeatsPerTable(); j++) {
-                    for(int k = 0; k < guest.size(); k++) {
-                        if(!p.isGuestPlaced(guest.get(k))) {
-                            p.addGuestToTable(i, guest.get(k));
-                            if(r.isPlanOK(p)) {
-                                boolean result = solve();
-                                if(result) return true;
-                            } else {
-                                p.removeGuestFromTable(guest.get(k));
+            Set<String> guests = p.getGuestsAtTable(i);
+            int unfilled = p.getSeatsPerTable() - guests.size();
+            for(int j = 0; j < unfilled; j++) {
+                for(int k = 0; k < guest.size(); k++) {
+                    if(!p.isGuestPlaced(guest.get(k))) {
+                        p.addGuestToTable(i, guest.get(k));
+                        if(r.isPlanOK(p)) {
+                            boolean result = solve();
+                            if(result) {
+                                return true;
                             }
                         }
+                        p.removeGuestFromTable(guest.get(k));
                     }
-
                 }
+                return false;
             }
         }
         return true;

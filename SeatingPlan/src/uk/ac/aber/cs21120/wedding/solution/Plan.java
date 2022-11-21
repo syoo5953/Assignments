@@ -112,14 +112,6 @@ public class Plan implements uk.ac.aber.cs21120.wedding.interfaces.IPlan {
           return new HashSet<>(this.plan.get(t));
      }
 
-     @Override
-     public boolean isTableFull(int t) {
-        if(this.plan.get(t).size() == this.setsPerTable) {
-            return true;
-        }
-        return false;
-     }
-
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(int i=0;i<getNumberOfTables();i++){

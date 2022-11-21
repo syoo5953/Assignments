@@ -178,4 +178,18 @@ public class RulesTests {
         Assertions.assertFalse(r.isPlanOK(p));
     }
 
+    @Test
+    public void testExtra(){
+        IPlan p = createPlan(2,3, "0","3","5","1", "2", "4");
+
+        IRules r = new Rules();
+        r.addMustBeTogether("0","3");
+        r.addMustBeApart("0","1");
+        r.addMustBeApart("2","3");
+        Assertions.assertTrue(r.isPlanOK(p));
+
+        IPlan p1 = createPlan(1,3, "0","2","4");
+
+        Assertions.assertFalse(r.isPlanOK(p1));
+    }
 }

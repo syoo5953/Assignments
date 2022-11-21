@@ -58,6 +58,4 @@ public interface IPlan {
      * @return a set of strings - the guests at that table
      */
     Set<String> getGuestsAtTable(int t);
-
-    boolean isTableFull(int t);
 }
